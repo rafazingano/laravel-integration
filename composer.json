@@ -1,0 +1,33 @@
+{
+    "name": "confrariaweb/laravel-integration",
+    "description": "Integration package for laravel",
+    "keywords": [
+        "Integration",
+        "framework",
+        "laravel"
+    ],
+    "license": "MIT",
+    "type": "package",
+    "authors": [
+        {
+            "name": "Rafael Zingano",
+            "email": "confrariaweb@gmail.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "psr-4": {
+            "ConfrariaWeb\\Integration\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ConfrariaWeb\\Integration\\Providers\\IntegrationServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev"
+}
