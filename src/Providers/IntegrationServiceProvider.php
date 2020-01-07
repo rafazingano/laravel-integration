@@ -13,6 +13,10 @@ use Illuminate\Support\ServiceProvider;
 class IntegrationServiceProvider extends ServiceProvider
 {
 
+    protected $commands = [
+        'ConfrariaWeb\Integration\Commands\Integration',
+    ];
+
     public function boot()
     {
         $this->loadViewsFrom(__DIR__ . '/../Views', 'integration');
@@ -20,6 +24,8 @@ class IntegrationServiceProvider extends ServiceProvider
 
     public function register()
     {
+        $this->commands($this->commands);
+
         $this->app->bind(IntegrationTypeContract::class, IntegrationTypeRepository::class);
         $this->app->bind('IntegrationTypeService', function ($app) {
             return new IntegrationTypeService($app->make(IntegrationTypeContract::class));
