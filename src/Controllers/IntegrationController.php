@@ -72,7 +72,7 @@ class IntegrationController extends Controller
     {
         $integration = resolve('IntegrationService')->create($request->all());
         return redirect()
-            ->route('integrations.edit', $integration->id)
+            ->route('admin.integrations.edit', $integration->id)
             ->with('status', 'Integração criada com sucesso!');
     }
 
@@ -128,7 +128,7 @@ class IntegrationController extends Controller
     {
         $integration = resolve('IntegrationService')->update($request->all(), $id);
         return redirect()
-            ->route('integrations.edit', $integration->id)
+            ->route('admin.integrations.edit', $integration->id)
             ->with('status', 'Integração editado com sucesso!');
     }
 

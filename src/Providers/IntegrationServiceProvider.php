@@ -19,7 +19,12 @@ class IntegrationServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/api.php');
+        $this->loadMigrationsFrom(__DIR__ . '/../Databases/Migrations');
+        $this->loadTranslationsFrom(__DIR__ . '/../Translations', 'integration');
         $this->loadViewsFrom(__DIR__ . '/../Views', 'integration');
+        $this->publishes([__DIR__ . '/../../config/cw_integration.php' => config_path('cw_integration.php')], 'cw_integration');
     }
 
     public function register()
