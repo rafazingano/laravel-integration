@@ -10,6 +10,10 @@ use ConfrariaWeb\Integration\Services\IntegrationService;
 use ConfrariaWeb\Integration\Services\IntegrationTypeService;
 use Illuminate\Support\ServiceProvider;
 
+use MeridienClube\Meridien\Services\Integrations\JsonGuntherService;
+use MeridienClube\Meridien\Services\Integrations\JsonService;
+use MeridienClube\Meridien\Services\Integrations\RdStationService;
+
 class IntegrationServiceProvider extends ServiceProvider
 {
 
@@ -40,6 +44,10 @@ class IntegrationServiceProvider extends ServiceProvider
         $this->app->bind('IntegrationService', function ($app) {
             return new IntegrationService($app->make(IntegrationContract::class));
         });
+
+
+
+
     }
 
 }
