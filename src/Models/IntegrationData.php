@@ -1,6 +1,6 @@
 <?php
 
-namespace MeridienClube\Meridien\Models;
+namespace ConfrariaWeb\Integration\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,6 +27,6 @@ class IntegrationData extends Model
 
     public function integration()
     {
-        return $this->belongsTo('MeridienClube\Meridien\Integration');
+        return $this->belongsTo('ConfrariaWeb\Integration\Models\Integration');
     }
 }

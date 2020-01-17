@@ -1,6 +1,6 @@
 <?php
 
-namespace MeridienClube\Meridien\Models;
+namespace ConfrariaWeb\Integration\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,30 +27,30 @@ class Integration extends Model
 
     public function user()
     {
-        return $this->belongsTo('MeridienClube\Meridien\User');
+        return $this->belongsTo('App\User');
     }
 
     public function type()
     {
-        return $this->belongsTo('MeridienClube\Meridien\IntegrationType');
+        return $this->belongsTo('ConfrariaWeb\Integration\Models\IntegrationType');
     }
 
     public function service()
     {
-        return $this->belongsTo('MeridienClube\Meridien\Service');
+        return $this->belongsTo('ConfrariaWeb\Integration\Models\Service');
     }
 
     public function users()
     {
-        return $this->belongsToMany('MeridienClube\Meridien\User');
+        return $this->belongsToMany('App\User');
     }
 
     public function fields()
     {
-        return $this->hasMany('MeridienClube\Meridien\IntegrationField');
+        return $this->hasMany('ConfrariaWeb\Integration\Models\IntegrationField');
     }
 
     public function frequency(){
-        return $this->belongsTo('MeridienClube\Meridien\ScheduleFrequencyOption', 'frequency_id');
+        return $this->belongsTo('ConfrariaWeb\Integration\Models\ScheduleFrequencyOption', 'frequency_id');
     }
 }

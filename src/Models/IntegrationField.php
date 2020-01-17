@@ -1,6 +1,6 @@
 <?php
 
-namespace MeridienClube\Meridien\Models;
+namespace ConfrariaWeb\Integration\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

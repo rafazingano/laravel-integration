@@ -8,6 +8,7 @@ use ConfrariaWeb\Integration\Repositories\IntegrationRepository;
 use ConfrariaWeb\Integration\Repositories\IntegrationTypeRepository;
 use ConfrariaWeb\Integration\Services\IntegrationService;
 use ConfrariaWeb\Integration\Services\IntegrationTypeService;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 use MeridienClube\Meridien\Services\Integrations\JsonGuntherService;
@@ -29,6 +30,8 @@ class IntegrationServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__ . '/../Translations', 'integration');
         $this->loadViewsFrom(__DIR__ . '/../Views', 'integration');
         $this->publishes([__DIR__ . '/../../config/cw_integration.php' => config_path('cw_integration.php')], 'cw_integration');
+
+        Blade::component('integration::components.integrations', 'integrations');
     }
 
     public function register()

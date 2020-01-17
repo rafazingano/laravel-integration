@@ -1,6 +1,6 @@
 <?php
 
-namespace MeridienClube\Meridien\Models;
+namespace ConfrariaWeb\Integration\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,7 +16,7 @@ class IntegrationType extends Model
     public function users()
     {
         return $this->belongsToMany(
-    'MeridienClube\Meridien\User',
+    'App\User',
     'integration_user',
     'integration_id',
     'user_id'

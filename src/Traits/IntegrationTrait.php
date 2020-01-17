@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Traits;
-
-use Auth;
+namespace ConfrariaWeb\Integration\Traits;
 
 trait IntegrationTrait
 {
 
     public function integrations()
     {
-        return $this->belongsToMany('App\Integration');
+        return $this->belongsToMany('ConfrariaWeb\Integration\Models\Integration');
     }
 
     public function integrationData()
     {
-        return $this->morphMany('App\IntegrationData', 'integrationdataable');
+        return $this->morphMany('ConfrariaWeb\Integration\Models\IntegrationData', 'integrationdataable');
     }
 
 }
