@@ -5,6 +5,8 @@ namespace ConfrariaWeb\Integration\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class IntegrationController extends Controller
 {
@@ -37,40 +39,27 @@ class IntegrationController extends Controller
         }
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $data['integrations'] = resolve('IntegrationService')->all();
-        return view('integrations.index', $data);
+        return view(config('cw_integration.views') . 'integrations.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $data['services'] = resolve('ServiceService')->pluck();
+        $data['services'] = collect(config('cw_integration.services'))->pluck('name', 'slug');
         $data['types'] = resolve('IntegrationTypeService')->pluck();
-        $data['users'] = resolve('UserService')->pluck();
+        $data['users'] = [];
         $data['scheduleFrequencyOptions'] = resolve('ScheduleFrequencyOptionService')->pluck();
-        return view('integrations.create', $data);
+        return view(config('cw_integration.views') . 'integrations.create', $data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $integration = resolve('IntegrationService')->create($request->all());
+        $data = $request->all();
+        $data['user_id'] = $data['user_id']?? Auth::id();
+        $data['code'] = $data['code']?? Str::random(20);
+        $integration = resolve('IntegrationService')->create($data);
         return redirect()
             ->route('admin.integrations.edit', $integration->id)
             ->with('status', 'Integração criada com sucesso!');
@@ -87,12 +76,6 @@ class IntegrationController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $data['integration'] = resolve('IntegrationService')->find($id);
@@ -101,20 +84,23 @@ class IntegrationController extends Controller
             $data['api_token'] = resolve('UserService')->find($data['integration']->options['data']['user_id'])->api_token;
         }
 
-        $data['services'] = resolve('ServiceService')->pluck();
+        $data['services'] = collect(config('cw_integration.services'))->pluck('name', 'slug');
         $data['types'] = resolve('IntegrationTypeService')->pluck();
-        $data['users'] = resolve('UserService')->pluck();
         $data['scheduleFrequencyOptions'] = resolve('ScheduleFrequencyOptionService')->pluck();
         $data['user']['roles'] = resolve('RoleService')->pluck();
-        $data['user']['statuses'] = resolve('StatusService')->pluck();
-        $data['user']['steps'] = resolve('StepService')->pluck();
+        if(isset($data['integration']->options['data']['user_id'])) {
+            $option_data_user = resolve('UserService')->find($data['integration']->options['data']['user_id']);
+            $data['option_data_user'] = $option_data_user->pluck('name', 'id');
+        }
+        //$data['user']['statuses'] = resolve('StatusService')->pluck();
+        //$data['user']['steps'] = resolve('StepService')->pluck();
         $IntegrationService = resolve('IntegrationService');
         $IntegrationService->setId($id);
         //dd($IntegrationService->fieldsInside());
         $data['inside_fields'] = $IntegrationService->fieldsInside()->prepend('Escolha um opção', '');
         $data['outside_fields'] = $IntegrationService->fieldsOutside()->prepend('Escolha um opção', '');
 
-        return view('integrations.edit', $data);
+        return view(config('cw_integration.views') . 'integrations.edit', $data);
     }
 
     /**

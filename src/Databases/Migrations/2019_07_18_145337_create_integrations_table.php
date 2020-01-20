@@ -6,11 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateIntegrationsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('integration_types', function (Blueprint $table) {
@@ -25,8 +21,8 @@ class CreateIntegrationsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('frequency_id');
             $table->unsignedBigInteger('type_id');
-            $table->unsignedBigInteger('service_id');
             $table->unsignedBigInteger('user_id');
+            $table->string('service');
             $table->string('code', 20)->unique();
             $table->string('title');
             $table->string('key_field')->nullable();
@@ -44,11 +40,6 @@ class CreateIntegrationsTable extends Migration
             $table->foreign('type_id')
                 ->references('id')
                 ->on('integration_types')
-                ->onDelete('cascade');
-
-            $table->foreign('service_id')
-                ->references('id')
-                ->on('services')
                 ->onDelete('cascade');
 
             $table->foreign('user_id')
@@ -106,11 +97,6 @@ class CreateIntegrationsTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('integration_user');

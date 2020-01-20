@@ -1,6 +1,6 @@
 <?php
 
-namespace MeridienClube\Meridien\Services\Contracts;
+namespace ConfrariaWeb\Integration\Services\Contracts;
 
 interface IntegrationContract
 {

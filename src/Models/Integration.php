@@ -9,7 +9,7 @@ class Integration extends Model
     protected $fillable = [
         'frequency_id',
         'type_id',
-        'service_id',
+        'service',
         'user_id',
         'code',
         'title',
@@ -33,11 +33,6 @@ class Integration extends Model
     public function type()
     {
         return $this->belongsTo('ConfrariaWeb\Integration\Models\IntegrationType');
-    }
-
-    public function service()
-    {
-        return $this->belongsTo('ConfrariaWeb\Integration\Models\Service');
     }
 
     public function users()

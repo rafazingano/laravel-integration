@@ -40,25 +40,25 @@ class IntegrationService
                     $data_get_key_field = data_get($objData, $key_field);
                     $data_get_key_field = (!isset($data_get_key_field) && isset($objData['sync'])) ? data_get($objData['sync'], $key_field) : $data_get_key_field;
                     $data_get_key_field = (!isset($data_get_key_field) && isset($objData['attach'])) ? data_get($objData['attach'], $key_field) : $data_get_key_field;
-                    $findBy = resolve($integration->service->slug)->findBy($key_field, $data_get_key_field);
+                    $findBy = resolve($integration->service)->findBy($key_field, $data_get_key_field);
                     if($findBy){
                         break;
                     }
                 }
 
                 if ($integration->update && $integration->create) {
-                    $obj = resolve($integration->service->slug)->updateOrCreate($objData, $key_field);
+                    $obj = resolve($integration->service)->updateOrCreate($objData, $key_field);
                 }
                 if ($integration->update && !$integration->create && isset($data_get_key_field)) {
-                    //$findBy = resolve($integration->service->slug)->findBy($integration->key_field, $data_get_key_field);
+                    //$findBy = resolve($integration->service)->findBy($integration->key_field, $data_get_key_field);
                     if ($findBy) {
-                        $obj = resolve($integration->service->slug)->update($objData, $findBy->id);
+                        $obj = resolve($integration->service)->update($objData, $findBy->id);
                     }
                 }
                 if (!$integration->update && $integration->create && isset($data_get_key_field)) {
-                    //$findBy = resolve($integration->service->slug)->findBy($integration->key_field, $data_get_key_field);
+                    //$findBy = resolve($integration->service)->findBy($integration->key_field, $data_get_key_field);
                     if (!$findBy) {
-                        $obj = resolve($integration->service->slug)->create($objData);
+                        $obj = resolve($integration->service)->create($objData);
                     }
                 }
                 if (isset($obj)) {
@@ -150,7 +150,7 @@ class IntegrationService
     public function fieldsInside()
     {
         $integration = $this->obj->find($this->id);
-        return resolve($integration->service->slug)->fields();
+        return resolve($integration->service)->fields();
     }
 
     public function fieldsOutside()
