@@ -11,10 +11,6 @@ use Illuminate\Support\Str;
 class IntegrationController extends Controller
 {
 
-
-    /**
-     * IntegrationController constructor.
-     */
     public function __construct()
     {
         //ini_set('memory_limit', -1);
@@ -57,8 +53,8 @@ class IntegrationController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['user_id'] = $data['user_id']?? Auth::id();
-        $data['code'] = $data['code']?? Str::random(20);
+        $data['user_id'] = $data['user_id'] ?? Auth::id();
+        $data['code'] = $data['code'] ?? Str::random(20);
         $integration = resolve('IntegrationService')->create($data);
         return redirect()
             ->route('admin.integrations.edit', $integration->id)
@@ -88,7 +84,7 @@ class IntegrationController extends Controller
         $data['types'] = resolve('IntegrationTypeService')->pluck();
         $data['scheduleFrequencyOptions'] = resolve('ScheduleFrequencyOptionService')->pluck();
         $data['user']['roles'] = resolve('RoleService')->pluck();
-        if(isset($data['integration']->options['data']['user_id'])) {
+        if (isset($data['integration']->options['data']['user_id'])) {
             $option_data_user = resolve('UserService')->find($data['integration']->options['data']['user_id']);
             $data['option_data_user'] = $option_data_user->pluck('name', 'id');
         }
@@ -126,6 +122,9 @@ class IntegrationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $integration = resolve('IntegrationService')->destroy($id);
+        return redirect()
+            ->route('admin.integrations.index')
+            ->with('status', 'Integração deletada com sucesso!');
     }
 }
