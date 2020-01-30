@@ -2,27 +2,27 @@
     <div class="col-md-6">
         <div class="form-group">
             <label class="control-label">Tipo de integração </label>
-            {{ Form::select('type_id', $types, isset($integration)? $integration->type_id : null, ['class' => 'form-control kt-select2']) }}
+            {{ Form::select('type_id', $types, isset($integration)? $integration->type_id : null, ['class' => 'form-control']) }}
         </div>
         <div class="form-group">
             <label class="control-label">Titulo <span class="required"> * </span></label>
-            {!! Form::text('title', isset($role)? $role->titulo : null, ['class' => 'form-control', 'placeholder' => 'Digite o titulo', 'required']) !!}
+            {!! Form::text('title', $role->title?? null, ['class' => 'form-control', 'placeholder' => 'Digite o titulo', 'required']) !!}
         </div>
         <div class="form-group">
             <label class="control-label"> Serviço para atualizar </label>
-            {{ Form::select('service', $services, isset($integration)? $integration->service_id : null, ['class' => 'form-control kt-select2']) }}
+            {{ Form::select('service', $services, isset($integration)? $integration->service_id : null, ['class' => 'form-control']) }}
         </div>
         <div class="form-row">
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="control-label"> Permitir criar </label>
-                    {{ Form::select('create', [1 => trans('meridien.yes'), 0 => trans('meridien.no')], isset($integration)? $integration->create : null, ['class' => 'form-control']) }}
+                    {{ Form::select('create', [1 => trans('yes'), 0 => trans('no')], isset($integration)? $integration->create : null, ['class' => 'form-control']) }}
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="control-label"> Permitir atualizar </label>
-                    {{ Form::select('update', [1 => trans('meridien.yes'), 0 => trans('meridien.no')], isset($integration)? $integration->update : null, ['class' => 'form-control']) }}
+                    {{ Form::select('update', [1 => trans('yes'), 0 => trans('no')], isset($integration)? $integration->update : null, ['class' => 'form-control']) }}
                 </div>
             </div>
             <div class="col-md-4">
@@ -40,26 +40,28 @@
 
         <div class="form-group">
             <label class="control-label"> Usuário que executa a ação </label>
-            {{ Form::select2('options[data][user_id]', $users?? [], $users?? [], ['id' => 'data_user_id', 'class' => 'form-control'], ['server_side' => ['route' => 'api.users.select2']]) }}
+            {{ Form::select2('options[data][user_id]', isset($integration)? [$integration->user->id => $integration->user->name] : [], $integration->user_id?? [], ['id' => 'data_user_id', 'class' => 'form-control'], ['server_side' => ['route' => 'api.users.select2']]) }}
             <small>
-                Esta informaçãos era usada por exemplo para informar no historico o usuario que
-                executou, pode-se criar um ususario para o sistema, assim fica facil reconhecer
+                Esta informaçãos será usada por exemplo para informar no historico o usuário que
+                executou, pode-se criar um usuário para o sistema, assim fica facil reconhecer
                 quando é uma ação do sistema e quando é um usuário.
             </small>
         </div>
-
     </div>
+
     <div class="col-md-6">
         @isset($integration->type)
             @includeIf('integration::forms.' . $integration->type->code)
         @endif
+
         @isset($integration->service)
             @includeIf('integration::forms.' . Str::snake($integration->service))
         @endif
+
         @if(isset($inside_fields) && isset($outside_fields) && !empty($outside_fields) && count($outside_fields) > 1)
             <div class="form-group">
                 <label class="control-label">Campo chave <span class="required"> * </span></label>
-                {{ Form::select('key_field[]', $inside_fields, isset($integration)? $integration->key_field : null, ['class' => 'form-control', 'placeholder' => 'Selecione o campo chave', 'required', 'multiple']) }}
+                {{ Form::select('key_field[]', $inside_fields, isset($integration)? $integration->key_field : null, ['class' => 'form-control', 'required', 'multiple']) }}
             </div>
             <h4>Interligue abaixo as colunas</h4>
             @php
@@ -104,11 +106,8 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        <div class="kt-form__actions float-right">
-            <button type="submit" class="btn btn-primary">Salvar</button>
-            <a href="{{ route('admin.integrations.index') }}" class="btn btn-secondary">Cancelar</a>
-        </div>
+    <div class="col-12">
+        @include('vendor::partials.buttons_form')
     </div>
 </div>
 

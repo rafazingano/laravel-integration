@@ -45,7 +45,8 @@ class Integration extends Model
         return $this->hasMany('ConfrariaWeb\Integration\Models\IntegrationField');
     }
 
-    public function frequency(){
+    public function frequency()
+    {
         return $this->belongsTo('ConfrariaWeb\Integration\Models\ScheduleFrequencyOption', 'frequency_id');
     }
 }

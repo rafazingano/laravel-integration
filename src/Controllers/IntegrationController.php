@@ -21,9 +21,6 @@ class IntegrationController extends Controller
         resolve('IntegrationService')->executeAll();
     }
 
-    /**
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
-     */
     public function receive($code)
     {
         try {
@@ -45,7 +42,6 @@ class IntegrationController extends Controller
     {
         $data['services'] = collect(config('cw_integration.services'))->pluck('name', 'slug');
         $data['types'] = resolve('IntegrationTypeService')->pluck();
-        $data['users'] = [];
         $data['scheduleFrequencyOptions'] = resolve('ScheduleFrequencyOptionService')->pluck();
         return view(config('cw_integration.views') . 'integrations.create', $data);
     }
@@ -61,12 +57,6 @@ class IntegrationController extends Controller
             ->with('status', 'Integração criada com sucesso!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
@@ -74,38 +64,39 @@ class IntegrationController extends Controller
 
     public function edit($id)
     {
-        $data['integration'] = resolve('IntegrationService')->find($id);
-
-        if ($data['integration']->options['data']['user_id']) {
-            $data['api_token'] = resolve('UserService')->find($data['integration']->options['data']['user_id'])->api_token;
-        }
-
+        $data['integration'] = $integration = resolve('IntegrationService')->find($id);
         $data['services'] = collect(config('cw_integration.services'))->pluck('name', 'slug');
         $data['types'] = resolve('IntegrationTypeService')->pluck();
         $data['scheduleFrequencyOptions'] = resolve('ScheduleFrequencyOptionService')->pluck();
-        $data['user']['roles'] = resolve('RoleService')->pluck();
+        //$IntegrationService = resolve('IntegrationService');
+        $data['inside_fields'] = resolve('IntegrationService')->fieldsInside($integration->id);
+        $data['outside_fields'] = resolve('IntegrationService')->fieldsOutside($integration->id);
+
+        /*
+        if ($data['integration']->options['data']['user_id']) {
+            $data['api_token'] = resolve('UserService')->find($data['integration']->options['data']['user_id'])->api_token;
+        }
+        */
+        //$data['user']['roles'] = resolve('RoleService')->pluck();
+        /*
         if (isset($data['integration']->options['data']['user_id'])) {
             $option_data_user = resolve('UserService')->find($data['integration']->options['data']['user_id']);
             $data['option_data_user'] = $option_data_user->pluck('name', 'id');
         }
+        */
         //$data['user']['statuses'] = resolve('StatusService')->pluck();
         //$data['user']['steps'] = resolve('StepService')->pluck();
-        $IntegrationService = resolve('IntegrationService');
-        $IntegrationService->setId($id);
+        //$IntegrationService = resolve('IntegrationService');
+        ///dd($id);
+        //$IntegrationService->setId($id);
         //dd($IntegrationService->fieldsInside());
-        $data['inside_fields'] = $IntegrationService->fieldsInside()->prepend('Escolha um opção', '');
-        $data['outside_fields'] = $IntegrationService->fieldsOutside()->prepend('Escolha um opção', '');
+        //dd($integration->fieldsInside());
+        //$data['inside_fields'] = $integration->fieldsInside()->prepend('Escolha um opção', '');
+        //$data['outside_fields'] = $integration->fieldsOutside()->prepend('Escolha um opção', '');
 
         return view(config('cw_integration.views') . 'integrations.edit', $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $integration = resolve('IntegrationService')->update($request->all(), $id);
@@ -114,12 +105,6 @@ class IntegrationController extends Controller
             ->with('status', 'Integração editado com sucesso!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $integration = resolve('IntegrationService')->destroy($id);

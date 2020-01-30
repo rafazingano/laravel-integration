@@ -35,13 +35,13 @@ class IntegrationService
                 $findBy = NULL;
                 $obj = NULL;
 
-                foreach($integration->key_field as $kf) {
+                foreach ($integration->key_field as $kf) {
                     $key_field = $kf;
                     $data_get_key_field = data_get($objData, $key_field);
                     $data_get_key_field = (!isset($data_get_key_field) && isset($objData['sync'])) ? data_get($objData['sync'], $key_field) : $data_get_key_field;
                     $data_get_key_field = (!isset($data_get_key_field) && isset($objData['attach'])) ? data_get($objData['attach'], $key_field) : $data_get_key_field;
                     $findBy = resolve($integration->service)->findBy($key_field, $data_get_key_field);
-                    if($findBy){
+                    if ($findBy) {
                         break;
                     }
                 }
@@ -50,13 +50,11 @@ class IntegrationService
                     $obj = resolve($integration->service)->updateOrCreate($objData, $key_field);
                 }
                 if ($integration->update && !$integration->create && isset($data_get_key_field)) {
-                    //$findBy = resolve($integration->service)->findBy($integration->key_field, $data_get_key_field);
                     if ($findBy) {
                         $obj = resolve($integration->service)->update($objData, $findBy->id);
                     }
                 }
                 if (!$integration->update && $integration->create && isset($data_get_key_field)) {
-                    //$findBy = resolve($integration->service)->findBy($integration->key_field, $data_get_key_field);
                     if (!$findBy) {
                         $obj = resolve($integration->service)->create($objData);
                     }
@@ -64,7 +62,6 @@ class IntegrationService
                 if (isset($obj)) {
                     $this->integrationDataCreate($integration, $obj, $objData);
                 }
-
                 unset($obj);
             }
             return true;
@@ -72,10 +69,6 @@ class IntegrationService
         return false;
     }
 
-    /**
-     * @param $integration
-     * @param $obj
-     */
     protected function integrationDataCreate($integration, $obj, $data)
     {
         if (isset($integration) && isset($obj)) {
@@ -147,18 +140,19 @@ class IntegrationService
         return $contentMap;
     }
 
-    public function fieldsInside()
+    public function fieldsInside($integration_id)
     {
-        $integration = $this->obj->find($this->id);
+        $integration = $this->obj->find($integration_id);
         return resolve($integration->service)->fields();
     }
 
-    public function fieldsOutside()
+    public function fieldsOutside($integration_id)
     {
-        $integration = $this->obj->find($this->id);
+        $integration = $this->obj->find($integration_id);
         $data = isset($integration->options['data']) ? $integration->options['data'] : [];
         $serviceType = resolve($integration->type->service);
         $serviceType->set($data);
+        //dd($serviceType->fields());
         return $serviceType->fields();
     }
 
