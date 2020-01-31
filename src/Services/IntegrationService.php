@@ -29,7 +29,8 @@ class IntegrationService
     public function execute($integration, $parameters = null)
     {
         if (isset($integration->key_field) && !$integration->key_field->isEmpty()) {
-            $convertData = $this->convertData($integration, $parameters);
+            $convertData = $this->convertData($integration, $parameters);;
+
             foreach ($convertData as $objData) {
                 $key_field = NULL;
                 $findBy = NULL;
