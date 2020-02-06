@@ -1,5 +1,6 @@
 {
     "name": "confrariaweb/laravel-integration",
+    "version": "dev-master",
     "description": "Integration package for laravel",
     "keywords": [
         "Integration",
