@@ -2,9 +2,9 @@
     <table class="integrations_table table table-striped" style="width:100%">
         <thead>
         <tr>
-            <th>{{ trans('meridien.integration') }}</th>
-            <th>{{ trans('meridien.integrations.type') }}</th>
-            <th>{{ trans('meridien.date') }}</th>
+            <th>{{ trans('Integração') }}</th>
+            <th>{{ trans('Tipo') }}</th>
+            <th>{{ trans('Data de criação') }}</th>
         </tr>
         </thead>
         <tbody>
