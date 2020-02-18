@@ -1,5 +1,5 @@
 @inject('userStatusService', 'ConfrariaWeb\User\Services\UserStatusService')
-@inject('userStepService', 'ConfrariaWeb\User\Services\UserStepService')
+@inject('userStepService', 'ConfrariaWeb\Crm\Services\StepService')
 @inject('roleService', 'ConfrariaWeb\Entrust\Services\RoleService')
 
 <h4>Campos padrão caso nao seja vinculado</h4>
@@ -16,7 +16,7 @@
 
 <div class="form-group">
     <label class="control-label">Fase</label>
-    {{ Form::select2('options[data][sync][steps][]', isset($integration->options['data']['sync']['steps'])? $userStepService->whereIn('id', $integration->options['data']['sync']['steps'])->pluck() : [], $integration->options['data']['sync']['steps']?? NULL, ['id' => 'data_user_step', 'class' => 'form-control', 'multiple'=>true], ['server_side' => ['route' => 'api.users.steps.select2']]) }}
+    {{ Form::select2('options[data][sync][steps][]', isset($integration->options['data']['sync']['steps'])? $userStepService->whereIn('id', $integration->options['data']['sync']['steps'])->pluck() : [], $integration->options['data']['sync']['steps']?? NULL, ['id' => 'data_user_step', 'class' => 'form-control', 'multiple'=>true], ['server_side' => ['route' => 'api.crm.steps.select2']]) }}
 </div>
 
 <div class="form-group">

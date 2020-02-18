@@ -85,7 +85,7 @@ class IntegrationController extends Controller
         }
         */
         //$data['user']['statuses'] = resolve('StatusService')->pluck();
-        //$data['user']['steps'] = resolve('StepService')->pluck();
+        //$data['user']['steps'] = resolve('CrmStepService')->pluck();
         //$IntegrationService = resolve('IntegrationService');
         ///dd($id);
         //$IntegrationService->setId($id);

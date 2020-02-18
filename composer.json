@@ -16,6 +16,7 @@
         }
     ],
     "require": {
+        "guzzlehttp/guzzle": "~6.0",
         "confrariaweb/laravel-select2": "dev-master",
         "confrariaweb/laravel-user": "dev-master",
         "confrariaweb/laravel-vendor": "dev-master"
