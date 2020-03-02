@@ -4,6 +4,7 @@ namespace ConfrariaWeb\Integration\Services;
 
 use ConfrariaWeb\Integration\Contracts\IntegrationContract;
 use ConfrariaWeb\Vendor\Traits\ServiceTrait;
+use Matrix\Exception;
 
 class IntegrationService
 {
@@ -29,7 +30,7 @@ class IntegrationService
     public function execute($integration, $parameters = null)
     {
         if (isset($integration->key_field) && !$integration->key_field->isEmpty()) {
-            $convertData = $this->convertData($integration, $parameters);;
+            $convertData = $this->convertData($integration, $parameters);
 
             foreach ($convertData as $objData) {
                 $key_field = NULL;
@@ -64,6 +65,7 @@ class IntegrationService
                     $this->integrationDataCreate($integration, $obj, $objData);
                 }
                 unset($obj);
+
             }
             return true;
         }
@@ -116,15 +118,18 @@ class IntegrationService
 
     protected function convertData($integration, $parameters = null)
     {
+        $type = $integration->type()->first();
         $data = isset($integration->options['data']) ? $integration->options['data'] : [];
-        $serviceType = resolve($integration->type->service);
+        $serviceType = resolve($type['service']);
         if (isset($parameters)) {
             $data = [$data, $parameters];
         }
         $serviceType->set($data);
-        $fields = $integration->fields->mapWithKeys(function ($item) {
+
+        $fields = $integration->fields()->get()->mapWithKeys(function ($item) {
             return [$item['outside'] => $item['inside']];
         })->toArray();
+
         $contentMap = $serviceType->get()->map(function ($item, $key) use ($fields) {
             $r = [];
             foreach ($item as $key => $value) {
