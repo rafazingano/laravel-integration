@@ -51,7 +51,7 @@
 
     <div class="col-md-6">
         @isset($integration->type)
-            @includeIf('integration::forms.' . $integration->type->code)
+            @includeIf($integration->type->view . '::form')
         @endif
 
         @isset($integration->service)

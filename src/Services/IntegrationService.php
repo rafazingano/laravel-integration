@@ -62,7 +62,8 @@ class IntegrationService
                     }
                 }
                 if (isset($obj)) {
-                    $this->integrationDataCreate($integration, $obj, $objData);
+                    echo $findBy->id .  ' | ';
+                    //$this->integrationDataCreate($integration, $obj, $objData);
                 }
                 unset($obj);
 

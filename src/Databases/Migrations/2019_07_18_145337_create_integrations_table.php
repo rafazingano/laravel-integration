@@ -12,7 +12,7 @@ class CreateIntegrationsTable extends Migration
         Schema::create('integration_types', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('code', '30')->unique();
+            $table->string('view')->unique();
             $table->string('service')->nullable();
             $table->timestamps();
         });
