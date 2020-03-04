@@ -10,7 +10,7 @@ Route::prefix('admin')
     ->group(function () {
         Route::resource('integrations', 'IntegrationController');
 
-        Route::get('integrations/tests/jsongunter', function () {
+        /*Route::get('integrations/tests/jsongunter', function () {
             $url = 'https://www.meridienclube.com.br/sinc-bases/associados-list?token=intra2SGM&environment=production&function=retrieve';
             //dd($url);
             $r = LazyCollection::make(function () use ($url) {
@@ -40,6 +40,6 @@ Route::prefix('admin')
                 });
 
             //dd($r->all());
-        });
+        });*/
 
     });
